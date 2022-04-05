@@ -1,5 +1,9 @@
 const express = require('express');
+const connectMongo = require('./database/db-config');
 const app = express();
+
+//Database
+connectMongo();
 
 // Middlewares
 app.use(express.json());
