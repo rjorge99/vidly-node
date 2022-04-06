@@ -1,6 +1,5 @@
-const Joi = require('joi');
 const { Router } = require('express');
-const Genre = require('../models/genre');
+const { Genre, validate } = require('../models/genre');
 const router = Router();
 
 router.get('/', async (req, res) => {
@@ -26,13 +25,12 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const { error } = validateGenre(req.body);
+        const { error } = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
         let genre = new Genre({ name: req.body.name });
         genre = await genre.save();
 
-        console.log(genre);
         res.send(genre);
     } catch (error) {
         console.log(error);
@@ -45,7 +43,7 @@ router.put('/:id', async (req, res) => {
         const genre = await Genre.findById(req.params.id);
 
         if (!genre) return res.status(404).send('Genre not found');
-        const { error } = validateGenre(req.body);
+        const { error } = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
 
         genre.set({
@@ -69,13 +67,5 @@ router.delete('/:id', async (req, res) => {
         console.log(error);
     }
 });
-
-const validateGenre = (genre) => {
-    const schema = Joi.object({
-        name: Joi.string().min(5).required()
-    });
-
-    return schema.validate(genre);
-};
 
 module.exports = router;
