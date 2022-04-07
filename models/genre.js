@@ -25,3 +25,4 @@ const validate = (genre) => {
 
 module.exports.Genre = mongoose.model('Genre', genreSchema);
 module.exports.validate = validate;
+module.exports.genreSchema = genreSchema;
