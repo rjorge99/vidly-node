@@ -2,7 +2,10 @@ const { Router } = require('express');
 const { Rental, validate } = require('../models/rental');
 const { Customer } = require('../models/customer');
 const { Movie } = require('../models/movie');
+const Fawn = require('fawn');
 const router = Router();
+
+Fawn.init('mongodb://localhost/vidly');
 
 router.get('/', async (req, res) => {
     const rentals = await Rental.find().sort('-dateOut');
@@ -21,7 +24,35 @@ router.post('/', async (req, res) => {
 
     if (movie.numberInStock === 0) return res.send('Movie not in stock');
 
-    res.send('ex');
+    let rental = new Rental({
+        customer: {
+            _id: customer._id,
+            name: customer.name,
+            phone: customer.phone
+        },
+        movie: {
+            _id: movie._id,
+            title: movie.title,
+            dailyRentalRate: movie.dailyRentalRate
+        }
+    });
+
+    try {
+        new Fawn.Task()
+            .save('rentals', rental)
+            .update(
+                'movies',
+                { _id: movie._id },
+                {
+                    $inc: { numberInStock: -1 }
+                }
+            )
+            .run();
+
+        res.send(movie);
+    } catch (error) {
+        res.status(500).send('An error has occurred while saving');
+    }
 });
 
 module.exports = router;

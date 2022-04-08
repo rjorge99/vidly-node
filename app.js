@@ -1,5 +1,7 @@
 const express = require('express');
 const connectMongo = require('./database/db-config');
+const Joi = require('Joi');
+Joi.objectId = require('joi-objectid')(Joi);
 const app = express();
 
 //Database
