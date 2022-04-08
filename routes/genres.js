@@ -1,7 +1,10 @@
 const { Router } = require('express');
 const { Genre, validate } = require('../models/genre');
+const admin = require('../middlewares/admin');
+const auth = require('../middlewares/auth');
 const router = Router();
 
+console.log(auth);
 router.get('/', async (req, res) => {
     try {
         const genres = await Genre.find().sort('name');
@@ -23,7 +26,7 @@ router.get('/:id', async (req, res) => {
     }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', auth, async (req, res) => {
     try {
         const { error } = validate(req.body);
         if (error) return res.status(400).send(error.details[0].message);
@@ -56,7 +59,7 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', [auth, admin], async (req, res) => {
     try {
         const genre = await Genre.findByIdAndRemove(req.params.id);
 
