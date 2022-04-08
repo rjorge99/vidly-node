@@ -3,23 +3,15 @@ const { validate, Customer } = require('../models/customer');
 const router = Router();
 
 router.get('/', async (req, res) => {
-    try {
-        const customers = await Customer.find().sort('name');
-        res.send(customers);
-    } catch (error) {
-        console.log(error);
-    }
+    const customers = await Customer.find().sort('name');
+    res.send(customers);
 });
 
 router.get('/:id', async (req, res) => {
-    try {
-        const customer = await Customer.findById(req.params.id);
-        if (!customer) return res.status(404).send('Customer not found');
+    const customer = await Customer.findById(req.params.id);
+    if (!customer) return res.status(404).send('Customer not found');
 
-        res.send(customer);
-    } catch (error) {
-        console.log(error);
-    }
+    res.send(customer);
 });
 
 router.post('/', async (req, res) => {

@@ -4,26 +4,17 @@ const admin = require('../middlewares/admin');
 const auth = require('../middlewares/auth');
 const router = Router();
 
-console.log(auth);
 router.get('/', async (req, res) => {
-    try {
-        const genres = await Genre.find().sort('name');
-        res.send(genres);
-    } catch (error) {
-        console.log(error);
-    }
+    const genres = await Genre.find().sort('name');
+    res.send(genres);
 });
 
 router.get('/:id', async (req, res) => {
-    try {
-        const genre = await Genre.findById(req.params.id);
+    const genre = await Genre.findById(req.params.id);
 
-        if (!genre) return res.status(404).send('Genre not found');
+    if (!genre) return res.status(404).send('Genre not found');
 
-        res.send(genre);
-    } catch (error) {
-        console.log(error);
-    }
+    res.send(genre);
 });
 
 router.post('/', auth, async (req, res) => {
