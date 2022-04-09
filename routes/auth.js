@@ -3,8 +3,6 @@ const { User } = require('../models/user');
 const bcrypt = require('bcryptjs');
 const Joi = require('Joi');
 const router = Router();
-const jwt = require('jsonwebtoken');
-const config = require('config');
 
 router.post('/', async (req, res) => {
     try {
