@@ -4,7 +4,9 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "test": "jest --watchAll --verbose"
+        "test": "jest --watchAll --verbose",
+        "start": "node app.js",
+        "dev": "set NODE_ENV=development&& nodemon app.js"
     },
     "keywords": [],
     "author": "",
