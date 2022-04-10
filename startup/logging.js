@@ -10,7 +10,10 @@ module.exports = function () {
         // winston.error(err.message, err); process.exit(1);
     });
 
-    winston.exceptions.handle(new winston.transports.File({ filename: 'uncaughtException.log' }));
+    winston.exceptions.handle([
+        new winston.transports.File({ filename: 'uncaughtException.log' }),
+        new winston.transports.Console()
+    ]);
     winston.add(new winston.transports.File({ filename: 'logfile.log' }));
     // winston.add(new winston.transports.Console());
     // winston.add(new winston.transports.MongoDB({ db: 'mongodb://localhost/vidly' }));
