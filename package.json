@@ -4,7 +4,7 @@
     "description": "",
     "main": "app.js",
     "scripts": {
-        "test": "jest --watchAll --verbose",
+        "test": "set NODE_ENV=test&& jest --watchAll --verbose --detectOpenHandles",
         "start": "node app.js",
         "dev": "set NODE_ENV=development&& nodemon app.js"
     },
@@ -26,6 +26,7 @@
         "winston-mongodb": "^5.0.7"
     },
     "devDependencies": {
-        "jest": "^27.5.1"
+        "jest": "^27.5.1",
+        "supertest": "^6.2.2"
     }
 }
