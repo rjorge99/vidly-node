@@ -14,11 +14,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        const movies = await Movie.findById(req.params.id);
+        const movie = await Movie.findById(req.params.id);
+        console.log(movie);
+        if (!movie) return res.status(404).send('Movie not found');
 
-        if (!movies) return res.status(404).send('Movie not found');
-
-        res.send(movies);
+        res.send(movie);
     } catch (error) {
         console.log(error);
     }

@@ -1,6 +1,7 @@
 const Joi = require('joi');
 const { genreSchema } = require('./genre');
 const mongoose = require('mongoose');
+Joi.objectId = require('joi-objectid')(Joi);
 
 const movieSchema = new mongoose.Schema({
     title: {
