@@ -1,7 +1,9 @@
 const express = require('express');
 const error = require('../middlewares/error');
+const cors = require('cors');
 
 module.exports = (app) => {
+    app.use(cors());
     app.use(express.json());
     app.use('/api/genres', require('../routes/genres'));
     app.use('/api/customers', require('../routes/customers'));
