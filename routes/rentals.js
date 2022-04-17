@@ -3,6 +3,7 @@ const { Rental, validate } = require('../models/rental');
 const { Customer } = require('../models/customer');
 const { Movie } = require('../models/movie');
 const Fawn = require('fawn');
+const auth = require('../middlewares/auth');
 const router = Router();
 
 Fawn.init('mongodb://localhost/vidly');

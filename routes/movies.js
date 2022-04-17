@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { Movie, validate } = require('../models/movie');
 const { Genre } = require('../models/genre');
+const auth = require('../middlewares/auth');
 const router = new Router();
 
 router.get('/', async (req, res) => {
