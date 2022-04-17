@@ -6,12 +6,8 @@ const genreSchema = new Schema({
     name: {
         type: String,
         required: true,
-        validate: {
-            validator: function (v) {
-                return v.length > 5;
-            }
-        },
-        message: 'The name should have at least 5 characters'
+        minLength: 5,
+        maxlength: 50
     }
 });
 
@@ -20,9 +16,9 @@ const validate = (genre) => {
         name: Joi.string().min(5).max(50).required()
     });
 
-    return schema.validate(genre);
+    return Joi.validate(genre, schema);
 };
 
 module.exports.Genre = mongoose.model('Genre', genreSchema);
-module.exports.validate = validate;
 module.exports.genreSchema = genreSchema;
+module.exports.validate = validate;

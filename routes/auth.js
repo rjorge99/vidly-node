@@ -5,22 +5,17 @@ const Joi = require('Joi');
 const router = Router();
 
 router.post('/', async (req, res) => {
-    try {
-        const { error } = validate(req.body);
-        if (error) return res.status(400).send(error.details[0].message);
+    const { error } = validate(req.body);
+    if (error) return res.status(400).send(error.details[0].message);
 
-        let user = await User.findOne({ email: req.body.email });
-        if (!user) return res.status(400).send('Invalid user or password');
+    let user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(400).send('Invalid user or password');
 
-        const validPassword = await bcrypt.compare(req.body.password, user.password);
-        if (!validPassword) return res.status(400).send('Invalid user or password');
+    const validPassword = await bcrypt.compare(req.body.password, user.password);
+    if (!validPassword) return res.status(400).send('Invalid user or password');
 
-        const token = user.generateAuthToken();
-
-        res.send(token);
-    } catch (error) {
-        console.log(error);
-    }
+    const token = user.generateAuthToken();
+    res.send(token);
 });
 
 const validate = (req) => {
@@ -29,7 +24,7 @@ const validate = (req) => {
         password: Joi.string().min(5).max(255).required()
     });
 
-    return schema.validate(req);
+    return Joi.validate(req, schema);
 };
 
 module.exports = router;

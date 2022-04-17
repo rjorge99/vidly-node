@@ -1,7 +1,7 @@
 const Joi = require('joi');
-const { genreSchema } = require('./genre');
 const mongoose = require('mongoose');
-Joi.objectId = require('joi-objectid')(Joi);
+const { genreSchema } = require('./genre');
+// Joi.objectId = require('joi-objectid')(Joi);
 
 const movieSchema = new mongoose.Schema({
     title: {
@@ -37,7 +37,7 @@ const validate = (movie) => {
         dailyRentalRate: Joi.number().min(0).required()
     });
 
-    return schema.validate(movie);
+    return Joi.validate(movie, schema);
 };
 
 module.exports.Movie = mongoose.model('Movies', movieSchema);

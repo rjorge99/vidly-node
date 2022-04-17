@@ -3,57 +3,45 @@ const { validate, Customer } = require('../models/customer');
 const router = Router();
 
 router.get('/', async (req, res) => {
-    const customers = await Customer.find().sort('name');
+    const customers = await Customer.find().select('-__v').sort('name');
     res.send(customers);
 });
 
+router.post('/', auth, async (req, res) => {
+    let customer = { ...req.body };
+    const { error } = validate(customer);
+    if (error) return res.status(400).send(error.details[0].message);
+
+    customer = new Customer(customer);
+    await customer.save();
+    res.send(customer);
+});
+
 router.get('/:id', async (req, res) => {
-    const customer = await Customer.findById(req.params.id);
+    const customer = await Customer.findById(req.params.id).select('-__v');
     if (!customer) return res.status(404).send('Customer not found');
 
     res.send(customer);
 });
 
-router.post('/', async (req, res) => {
-    try {
-        let customer = { ...req.body };
+router.put('/:id', auth, async (req, res) => {
+    let customer = { ...req.body };
 
-        const { error } = validate(customer);
-        if (error) return res.status(400).send(error.details[0].message);
+    const { error } = validate(customer);
+    if (error) return res.status(400).send(error.details[0].message);
 
-        customer = new Customer(customer);
-        await customer.save();
+    customer = await Customer.findByIdAndUpdate(req.params.id, customer, { new: true });
 
-        res.send(customer);
-    } catch (error) {
-        console.log(error);
-    }
+    if (!customer) return res.status(404).send('The customer with the given ID was not found');
+
+    res.send(customer);
 });
 
-router.put('/:id', async (req, res) => {
-    try {
-        let customer = { ...req.body };
+router.delete('/:id', auth, async (req, res) => {
+    const customer = await Customer.findByIdAndDelete(req.params.id);
+    if (!customer) return res.status(404).send('Customer not found');
 
-        const { error } = validate(customer);
-        if (error) return res.status(400).send(error.details[0].message);
-
-        customer = await Customer.findByIdAndUpdate(req.params.id, customer, { new: true });
-
-        res.send(customer);
-    } catch (error) {
-        console.log(error);
-    }
-});
-
-router.delete('/:id', async (req, res) => {
-    try {
-        const customer = await Customer.findByIdAndDelete(req.params.id);
-        if (!customer) return res.status(404).send('Customer not found');
-
-        res.send(customer);
-    } catch (error) {
-        console.log(error);
-    }
+    res.send(customer);
 });
 
 module.exports = router;
