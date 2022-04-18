@@ -24,7 +24,9 @@ router.post('/', async (req, res) => {
         await user.save();
 
         const token = user.generateAuthToken();
-        res.header('x-auth-token', token).send(_.pick(user, ['name', 'email', '_id']));
+        res.header('x-auth-token', token)
+            .header('access-control-expose-headers', 'x-auth-token') //permite que el cliente pueda leer el header de x-auth-token
+            .send(_.pick(user, ['name', 'email', '_id']));
     } catch (error) {
         console.log(error);
     }

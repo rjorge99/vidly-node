@@ -16,7 +16,7 @@ const validate = (genre) => {
         name: Joi.string().min(5).max(50).required()
     });
 
-    return Joi.validate(genre, schema);
+    return schema.validate(genre);
 };
 
 module.exports.Genre = mongoose.model('Genre', genreSchema);
