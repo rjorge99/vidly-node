@@ -9,5 +9,6 @@ module.exports = (app) => {
     app.use('/api/rentals', require('../routes/rentals'));
     app.use('/api/users', require('../routes/users'));
     app.use('/api/auth', require('../routes/auth'));
+    app.use('/api/returns', require('../routes/returns'));
     app.use(error);
 };

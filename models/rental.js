@@ -1,5 +1,6 @@
 const Joi = require('Joi');
 const mongoose = require('mongoose');
+const moment = require('moment');
 Joi.objectId = require('joi-objectid')(Joi);
 
 const rentalSchema = mongoose.Schema({
